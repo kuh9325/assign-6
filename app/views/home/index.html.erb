@@ -1,0 +1,32 @@
+<div class="container">
+    <form style="margin-top: 40px" action="/home/write" method="POST">
+        <div class="form-group">
+            <label for="exampleInputEmail1">제목</label>
+            <input type="text" name="title" class="form-control" id="posttitle1" placeholder="제목">
+        </div>
+        <div class="form-group">
+            <label for="comment">내용</label>
+            <textarea class="form-control" rows="5" id="content" name="content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">게시</button>
+    </form>
+    <% @posts.each do |p| %>
+        <div class="well">
+            <span style="font-weight :bold;"><%= p.title %></span><br> 
+            <%= p.content %>
+            <% p.comments.each do |r| %>
+                <p><%= r.content %></p>
+            <% end %>
+            <form style="margin-top: 40px" action="/home/comment_write" method="POST">
+                <input type="hidden" value="<%= p.id %>" name="post_id">
+                <input type="text" name="comment" class="form-control" id="content" placeholder="댓글 입력">
+                <button type="submit" class="btn btn-default">댓글 달기</button>
+            </form>
+            <span style="font-style :italic;">게시물의 글자 수는 <%= p.content.size %> 입니다.(공백 포함)</span><br>
+            <span style="font-style :italic;">게시물의 글자 수는 <%= p.content.length - p.content.count(' ') %> 입니다.(공백 미포함)</span><br>
+            <span style="font-style :italic;">게시물의 단어 수는 <%= p.content.scan(/[\w'-]+/).size %> 입니다.</span><br>
+            <span style="font-style :italic;">게시물의 단어 수는 <%= p.content.split.size %> 입니다. (한글 적용)</span><br>
+            
+        </div>
+    <% end %>
+</div>
